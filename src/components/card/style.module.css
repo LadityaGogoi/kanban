@@ -81,6 +81,7 @@
 
 .feature_container {
     display: flex;
+    min-height: 1rem;
     flex-direction: row;
     justify-content: start;
     align-items: center;

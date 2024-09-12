@@ -38,7 +38,7 @@ const priorityLabels = {
     4: "Low"
 };
 
-const groupByPriority = (tickets) => {
+const groupByPriority = (tickets, users) => {
     const priorityGroups = {
         "No Priority": [],
         "Urgent": [],
@@ -49,8 +49,14 @@ const groupByPriority = (tickets) => {
 
     tickets.forEach(ticket => {
         const priority = priorityLabels[ticket.priority] || "No Priority";
+        const user = users.find(user => user.id === ticket.userId);
+        const ticketWithAvailability = {
+            ...ticket,
+            isAvailable: user ? user.available : false
+        };
+
         if (priorityGroups[priority]) {
-            priorityGroups[priority].push(ticket);
+            priorityGroups[priority].push(ticketWithAvailability);
         }
     });
     return priorityGroups;
@@ -58,15 +64,23 @@ const groupByPriority = (tickets) => {
 
 const groupByUser = (tickets, users) => {
     return tickets.reduce((groups, ticket) => {
+        // Find the associated user for the ticket
         const user = users.find(user => user.id === ticket.userId);
         const userName = user ? user.name : 'Unknown User';
         const userAvailable = user ? user.available : false; // Check availability
+
+        // Add isAvailable to the ticket
+        const ticketWithAvailability = {
+            ...ticket,
+            isAvailable: userAvailable
+        };
 
         if (!groups[userName]) {
             groups[userName] = { tickets: [], available: userAvailable };
         }
 
-        groups[userName].tickets.push(ticket);
+        // Add the ticket with isAvailable to the user's tickets
+        groups[userName].tickets.push(ticketWithAvailability);
         return groups;
     }, {});
 };
@@ -86,7 +100,7 @@ const Content = ({ grouping, sortBy, tickets, users }) => {
     const getGroupedData = () => {
         if (grouping === 'status') return groupByStatus(tickets, users);
         if (grouping === 'user') return groupByUser(tickets, users);
-        if (grouping === 'priority') return groupByPriority(tickets);
+        if (grouping === 'priority') return groupByPriority(tickets, users);
     };
 
     const groupedData = getGroupedData();
@@ -115,9 +129,7 @@ const Content = ({ grouping, sortBy, tickets, users }) => {
                             <div key={group} className={classes.status_container}>
                                 <Header grouping={grouping} title={group} total={groupedData[group].length} />
                                 {sortTickets(groupedData[group], sortBy).map(ticket => (
-                                    <div key={ticket.id}>
-                                        {ticket.id}
-                                    </div>
+                                    <Card key={ticket.id} item={ticket} grouping={grouping} />
                                 ))}
                             </div>
                         ))
@@ -132,9 +144,7 @@ const Content = ({ grouping, sortBy, tickets, users }) => {
                             <div key={group} className={classes.status_container}>
                                 <Header grouping={grouping} title={group} total={groupedData[group].tickets.length} isActive={groupedData[group].available} />
                                 {sortTickets(groupedData[group].tickets, sortBy).map(ticket => (
-                                    <div key={ticket.id}>
-                                        {ticket.id}
-                                    </div>
+                                    <Card key={ticket.id} item={ticket} grouping={grouping} />
                                 ))}
                             </div>
                         ))
