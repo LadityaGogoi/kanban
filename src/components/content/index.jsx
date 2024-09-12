@@ -1,4 +1,3 @@
-import { Icons } from '../../constants'
 import Card from '../card';
 import Header from '../header';
 import classes from './style.module.css'
@@ -13,9 +12,7 @@ const groupByStatus = (tickets, users) => {
     };
 
     tickets.forEach(ticket => {
-        // Find the associated user for the ticket
         const user = users.find(user => user.id === ticket.userId);
-        // Add availability information to each ticket
         const ticketWithAvailability = {
             ...ticket,
             isAvailable: user ? user.available : false
@@ -64,12 +61,10 @@ const groupByPriority = (tickets, users) => {
 
 const groupByUser = (tickets, users) => {
     return tickets.reduce((groups, ticket) => {
-        // Find the associated user for the ticket
         const user = users.find(user => user.id === ticket.userId);
         const userName = user ? user.name : 'Unknown User';
-        const userAvailable = user ? user.available : false; // Check availability
+        const userAvailable = user ? user.available : false;
 
-        // Add isAvailable to the ticket
         const ticketWithAvailability = {
             ...ticket,
             isAvailable: userAvailable
@@ -79,7 +74,6 @@ const groupByUser = (tickets, users) => {
             groups[userName] = { tickets: [], available: userAvailable };
         }
 
-        // Add the ticket with isAvailable to the user's tickets
         groups[userName].tickets.push(ticketWithAvailability);
         return groups;
     }, {});
@@ -88,10 +82,10 @@ const groupByUser = (tickets, users) => {
 
 const sortTickets = (tickets, sortBy) => {
     if (sortBy === 'Priority') {
-        return tickets.sort((a, b) => (b.priority || 0) - (a.priority || 0));  // Use fallback for missing priority
+        return tickets.sort((a, b) => (b.priority || 0) - (a.priority || 0));
     }
     if (sortBy === 'Title') {
-        return tickets.sort((a, b) => (a.title || '').localeCompare(b.title || ''));  // Use fallback for missing titles
+        return tickets.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
     }
     return tickets;
 };

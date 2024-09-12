@@ -1,8 +1,9 @@
 .card_container {
     width: 16rem;
+    height: 6rem;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     box-sizing: border-box;
     align-items: start;
     padding: 0.48rem 0.64rem;
