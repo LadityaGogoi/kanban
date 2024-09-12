@@ -6,13 +6,13 @@ const Navbar = ({ grouping, setGrouping, sortBy, setSortBy }) => {
     const [isDisplayOpen, setIsDisplayOpen] = useState(false);
 
     const handleGroupingChange = (e) => {
-        setIsDisplayOpen(!isDisplayOpen)
         setGrouping(e.target.value);
+        setIsDisplayOpen(!isDisplayOpen)
     };
 
     const handleSortByChange = (e) => {
-        setIsDisplayOpen(!isDisplayOpen)
         setSortBy(e.target.value);
+        setIsDisplayOpen(!isDisplayOpen)
     };
 
     return (
@@ -37,8 +37,8 @@ const Navbar = ({ grouping, setGrouping, sortBy, setSortBy }) => {
                             <div className={classes.option_container}>
                                 <div>Ordering</div>
                                 <select className={classes.select_container} value={sortBy} onChange={handleSortByChange}>
-                                    <option value="priority">Priority</option>
-                                    <option value="sortBy">Title</option>
+                                    <option value="Priority">Priority</option>
+                                    <option value="Title">Title</option>
                                 </select>
                             </div>
                         </div>

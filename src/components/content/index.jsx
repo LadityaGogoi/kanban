@@ -87,11 +87,11 @@ const groupByUser = (tickets, users) => {
 
 
 const sortTickets = (tickets, sortBy) => {
-    if (sortBy === 'priority') {
-        return tickets.sort((a, b) => b.priority - a.priority);
+    if (sortBy === 'Priority') {
+        return tickets.sort((a, b) => (b.priority || 0) - (a.priority || 0));  // Use fallback for missing priority
     }
-    if (sortBy === 'title') {
-        return tickets.sort((a, b) => a.title.localeCompare(b.title));
+    if (sortBy === 'Title') {
+        return tickets.sort((a, b) => (a.title || '').localeCompare(b.title || ''));  // Use fallback for missing titles
     }
     return tickets;
 };

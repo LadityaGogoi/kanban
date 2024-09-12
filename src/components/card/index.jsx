@@ -54,18 +54,18 @@ const Card = ({ item, grouping }) => {
                 <div className={classes.content_title}>{item.title}</div>
             </div>
             <div className={classes.feature_container}>
-                {
-                    grouping !== 'priority' && (
-                        <img className={classes.icon} src={statusIcons[priorityLabels[item.priority]]} alt='group' />
-                    )
-                }
-                <div>
+                <div className={classes.priority_border}>
                     {
-                        item.tag.map((feature, index) => (
-                            <div key={index} className={classes.feature_title}>{feature}</div>
-                        ))
+                        grouping !== 'priority' && (
+                            <img className={classes.icon} src={statusIcons[priorityLabels[item.priority]]} alt='group' />
+                        )
                     }
                 </div>
+                {
+                    item.tag.map((feature, index) => (
+                        <div key={index} className={classes.feature_title}>{feature}</div>
+                    ))
+                }
             </div>
         </div>
     )
