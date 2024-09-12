@@ -1,8 +1,9 @@
 import { Icons } from '../../constants'
+import Card from '../card';
 import Header from '../header';
 import classes from './style.module.css'
 
-const groupByStatus = (tickets) => {
+const groupByStatus = (tickets, users) => {
     const statusGroups = {
         "Backlog": [],
         "Todo": [],
@@ -12,13 +13,22 @@ const groupByStatus = (tickets) => {
     };
 
     tickets.forEach(ticket => {
-        const status = ticket.status
+        // Find the associated user for the ticket
+        const user = users.find(user => user.id === ticket.userId);
+        // Add availability information to each ticket
+        const ticketWithAvailability = {
+            ...ticket,
+            isAvailable: user ? user.available : false
+        };
+
+        const status = ticket.status;
         if (statusGroups[status]) {
-            statusGroups[status].push(ticket)
+            statusGroups[status].push(ticketWithAvailability);
         }
     });
     return statusGroups;
 };
+
 
 const priorityLabels = {
     0: "No Priority",
@@ -74,7 +84,7 @@ const sortTickets = (tickets, sortBy) => {
 
 const Content = ({ grouping, sortBy, tickets, users }) => {
     const getGroupedData = () => {
-        if (grouping === 'status') return groupByStatus(tickets);
+        if (grouping === 'status') return groupByStatus(tickets, users);
         if (grouping === 'user') return groupByUser(tickets, users);
         if (grouping === 'priority') return groupByPriority(tickets);
     };
@@ -90,9 +100,7 @@ const Content = ({ grouping, sortBy, tickets, users }) => {
                             <div key={group} className={classes.status_container}>
                                 <Header grouping={grouping} title={group} total={groupedData[group].length} />
                                 {sortTickets(groupedData[group], sortBy).map(ticket => (
-                                    <div key={ticket.id}>
-                                        {ticket.id}
-                                    </div>
+                                    <Card key={ticket.id} item={ticket} grouping={grouping} />
                                 ))}
                             </div>
                         ))

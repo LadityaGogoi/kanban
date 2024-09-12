@@ -8,13 +8,11 @@ const Navbar = ({ grouping, setGrouping, sortBy, setSortBy }) => {
     const handleGroupingChange = (e) => {
         setIsDisplayOpen(!isDisplayOpen)
         setGrouping(e.target.value);
-        localStorage.setItem('grouping', grouping);
     };
 
     const handleSortByChange = (e) => {
         setIsDisplayOpen(!isDisplayOpen)
         setSortBy(e.target.value);
-        localStorage.setItem('sortBy', sortBy);
     };
 
     return (
