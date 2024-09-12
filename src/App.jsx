@@ -9,29 +9,45 @@ const fetchDataFromApi = async () => {
 };
 
 const App = () => {
-  const [assignmentData, setAssignmentData] = useState(null)
+  const [tickets, setTickets] = useState([]);
+  const [users, setUsers] = useState([]);
   const [grouping, setGrouping] = useState('status');
   const [sortBy, setSortBy] = useState('priority');
 
   useEffect(() => {
-    const localAssignmentData = localStorage.getItem('localAsssignmentData')
+    const savedGrouping = localStorage.getItem('grouping') || 'status';
+    const savedSortBy = localStorage.getItem('sortBy') || 'priority';
 
-    if (localAssignmentData) {
-      setAssignmentData(localAssignmentData)
+    setGrouping(savedGrouping);
+    setSortBy(savedSortBy);
+
+    const localTickets = localStorage.getItem('tickets');
+    const localUsers = localStorage.getItem('users');
+
+    if (localTickets && localUsers) {
+      setTickets(JSON.parse(localTickets));
+      setUsers(JSON.parse(localUsers));
     } else {
       fetchDataFromApi().then((data) => {
-        setAssignmentData(data)
-        localStorage.setItem('localAsssignmentData', JSON.stringify(data));
+        setTickets(data.tickets);
+        setUsers(data.users);
+        localStorage.setItem('tickets', JSON.stringify(data.tickets));
+        localStorage.setItem('users', JSON.stringify(data.users));
       }).catch((error) => {
         console.error('Error fetching data from API:', error);
       });
     }
-  }, [])
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('grouping', grouping);
+    localStorage.setItem('sortBy', sortBy);
+  }, [grouping, sortBy]);
 
   return (
     <div className={classes.container}>
       <Navbar grouping={grouping} setGrouping={setGrouping} sortBy={sortBy} setSortBy={setSortBy} />
-      <Content />
+      <Content grouping={grouping} sortBy={sortBy} tickets={tickets} users={users} />
     </div>
   )
 }

@@ -3,14 +3,18 @@ import { Icons } from '../../constants'
 import classes from './style.module.css'
 
 const Navbar = ({ grouping, setGrouping, sortBy, setSortBy }) => {
-    const [isDisplayOpen, setIsDisplayOpen] = useState(true);
+    const [isDisplayOpen, setIsDisplayOpen] = useState(false);
 
     const handleGroupingChange = (e) => {
+        setIsDisplayOpen(!isDisplayOpen)
         setGrouping(e.target.value);
+        localStorage.setItem('grouping', grouping);
     };
 
     const handleSortByChange = (e) => {
+        setIsDisplayOpen(!isDisplayOpen)
         setSortBy(e.target.value);
+        localStorage.setItem('sortBy', sortBy);
     };
 
     return (
@@ -36,7 +40,7 @@ const Navbar = ({ grouping, setGrouping, sortBy, setSortBy }) => {
                                 <div>Ordering</div>
                                 <select className={classes.select_container} value={sortBy} onChange={handleSortByChange}>
                                     <option value="priority">Priority</option>
-                                    <option value="title">Title</option>
+                                    <option value="sortBy">Title</option>
                                 </select>
                             </div>
                         </div>

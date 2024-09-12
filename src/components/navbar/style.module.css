@@ -26,6 +26,7 @@
 
 .display_option_container {
     position: absolute;
+    z-index: 50;
     left: 0;
     /* top: "100%"; */
     margin-top: 1rem;
