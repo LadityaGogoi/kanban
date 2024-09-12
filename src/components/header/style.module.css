@@ -56,6 +56,16 @@
     right: 0;
 }
 
+.unactive_container {
+    width: 0.48rem;
+    height: 0.48rem;
+    border-radius: 0.32rem;
+    background-color: #ccc;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
 .icon {
     width: 1rem;
     height: 1rem;

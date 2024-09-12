@@ -25,8 +25,10 @@ const Header = ({ grouping, title, total, isActive }) => {
                         <div className={classes.user_container}>
                             <img className={classes.user_img} src={Images.User} alt='user' />
                             {
-                                isActive && (
+                                isActive === true ? (
                                     <div className={classes.active_container}></div>
+                                ) : (
+                                    <div className={classes.unactive_container}></div>
                                 )
                             }
                         </div>
